@@ -37,7 +37,7 @@ const Navbar = () => {
   }, [mobileMenu]);
 
   return (
-    <nav className="bg-white shadow-md px-5 py-3 flex items-center justify-between relative">
+    <nav className="bg-white shadow-md px-4  xl:px-32 py-5 flex items-center justify-between relative">
       <div className="flex items-center px-7">
         <img
           src="/logo.png"
@@ -46,7 +46,7 @@ const Navbar = () => {
         />
       </div>
 
-      <div className="hidden md:flex items-center px-2 space-x-6">
+      <div className="hidden md:flex items-center px-2 space-x-7">
         <FaRegHeart className="text-black-400 hover:text-black-900 cursor-pointer text-xl" />
         <FaRegMoon className="text-black-400 hover:text-black-900 cursor-pointer text-xl" />
         <FaRegUser className="text-black-400 hover:text-black-900 cursor-pointer text-xl" />

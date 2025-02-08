@@ -17,10 +17,12 @@ const ImageCard = React.memo(function ImageCard({ image, onClick }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
       <div className="absolute bottom-4 left-4 text-white">
-        <h3 className="font-semibold text-lg pr-16 line-clamp-2">
+        <h3 className="font-semibold text-base md:text-lg pr-3 line-clamp-2">
           {image.alt_description || "Untitled"}
         </h3>
-        <p className="text-sm opacity-90">by {image.user.name}</p>
+        <p className=" text-[.8rem] sm:text-sm opacity-90">
+          by {image.user.name}
+        </p>
       </div>
     </div>
   );

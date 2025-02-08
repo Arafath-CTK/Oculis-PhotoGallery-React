@@ -10,36 +10,56 @@ const ImageGrid = ({ query }) => {
   const sentinelRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Reset the images list and page when query changes
+  // Reset images when query changes
   useEffect(() => {
     setImages([]);
     setPage(1);
     setHasMore(true);
   }, [query]);
 
+  // Function to fetch regular images
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const endpoint = query
-        ? `https://api.unsplash.com/search/photos?page=${page}&per_page=12&query=${query}`
-        : `https://api.unsplash.com/photos?page=${page}&per_page=12`;
-
-      const response = await fetch(endpoint, {
-        headers: {
-          Authorization: `Client-ID ${
-            import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-          }`,
-        },
-      });
+      const response = await fetch(
+        `https://api.unsplash.com/photos?page=${page}&per_page=12`,
+        {
+          headers: {
+            Authorization: `Client-ID ${
+              import.meta.env.VITE_UNSPLASH_ACCESS_KEY
+            }`,
+          },
+        }
+      );
       const data = await response.json();
 
-      if (query) {
-        setImages((prev) => [...prev, ...data.results]);
-        setHasMore(data.results.length > 0);
-      } else {
-        setImages((prev) => [...prev, ...data]);
-        setHasMore(data.length > 0);
-      }
+      setImages((prev) => [...prev, ...data]);
+      setHasMore(data.length > 0);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page]);
+
+  // Function to fetch searched images
+  const fetchSearchedImages = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?page=${page}&per_page=12&query=${query}`,
+        {
+          headers: {
+            Authorization: `Client-ID ${
+              import.meta.env.VITE_UNSPLASH_ACCESS_KEY
+            }`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      setImages((prev) => [...prev, ...data.results]);
+      setHasMore(data.results.length > 0);
     } catch (error) {
       console.error("Fetch error:", error);
     } finally {
@@ -47,39 +67,33 @@ const ImageGrid = ({ query }) => {
     }
   }, [page, query]);
 
+  // Fetch images based on whether there's a search query
   useEffect(() => {
-    fetchImages();
-  }, [fetchImages]);
-
-  const loadMore = useCallback(() => {
-    if (hasMore && !isLoading) {
-      setPage((prev) => prev + 1);
+    if (query) {
+      fetchSearchedImages();
+    } else {
+      fetchImages();
     }
-  }, [hasMore, isLoading]);
+  }, [page, query]);
 
+  // Infinite Scroll Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore && !isLoading) {
+          setPage((prev) => prev + 1);
         }
       },
       { threshold: 1.0 }
     );
 
-    if (sentinelRef.current) {
-      observer.observe(sentinelRef.current);
-    }
+    if (sentinelRef.current) observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [loadMore]);
+  }, [hasMore, isLoading]);
 
   return (
     <div className="px-4 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {images.map((image) => (
-          <ImageCard key={image.id} image={image} onClick={setSelectedImage} />
-        ))}
-
+      <div className="grid grid-cols-2  md:grid-cols-3 gap-2 sm:gap-4">
         {isLoading &&
           Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -87,6 +101,24 @@ const ImageGrid = ({ query }) => {
               className="animate-pulse bg-gray-200 aspect-square rounded-lg"
             />
           ))}
+
+        {images?.length > 0 ? (
+          images.map((image) => (
+            <ImageCard
+              key={image.id}
+              image={image}
+              onClick={setSelectedImage}
+            />
+          ))
+        ) : (
+          <div className="flex justify-center items-center w-full col-span-3">
+            <div className="flex justify-center items-center w-full h-[300px] bg-gray-100 mb-8 rounded-lg shadow-md">
+              <h1 className="text-2xl font-semibold text-gray-700">
+                No images found
+              </h1>
+            </div>
+          </div>
+        )}
       </div>
 
       <div ref={sentinelRef} className="h-2 w-full" />
