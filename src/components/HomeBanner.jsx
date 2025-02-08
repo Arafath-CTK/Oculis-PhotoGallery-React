@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import Carousel from "./Carousel";
+import useDebounce from "./useDebounce";
 
 const imageList = [
   "https://images.unsplash.com/photo-1738597452982-5759da74f68d?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -13,6 +14,7 @@ const imageList = [
 const HomeBanner = ({ onSearch }) => {
   const [bgImage, setBgImage] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const debouncedSearchValue = useDebounce(searchValue, 500);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * imageList.length);
@@ -21,10 +23,13 @@ const HomeBanner = ({ onSearch }) => {
 
   // On each change, update the parent's query state.
   const handleChange = (e) => {
-    const value = e.target.value;
-    setSearchValue(value);
-    onSearch(value.trim());
+    setSearchValue(e.target.value);
   };
+
+  useEffect(() => {
+    // Call the onSearch callback with debounced value
+    onSearch(debouncedSearchValue.trim());
+  }, [debouncedSearchValue, onSearch]);
 
   return (
     <div
