@@ -73,7 +73,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.1, ease: "easeInOut" }}
-            className="absolute z-20 top-full right-4 bg-white rounded-md shadow-md md:hidden z-10"
+            className="absolute top-full right-4 bg-white rounded-md shadow-md md:hidden z-20"
           >
             <div className="flex flex-col space-y-2 py-4">
               <div className="flex items-center space-x-2 px-4  hover:cursor-pointer">
