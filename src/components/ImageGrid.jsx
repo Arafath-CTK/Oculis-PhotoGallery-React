@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import ImageCard from "./ImageCard";
+import ImageModal from "./ImageModal";
 
 const ImageGrid = () => {
   const [images, setImages] = useState([]);
@@ -7,6 +8,7 @@ const ImageGrid = () => {
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const sentinelRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
@@ -61,7 +63,7 @@ const ImageGrid = () => {
     <div className="px-4 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {images.map((image) => (
-          <ImageCard key={image.id} image={image} />
+          <ImageCard key={image.id} image={image} onClick={setSelectedImage} />
         ))}
 
         {isLoading &&
@@ -74,6 +76,14 @@ const ImageGrid = () => {
       </div>
 
       <div ref={sentinelRef} className="h-2 w-full" />
+
+      {/* Modal */}
+      {selectedImage && (
+        <ImageModal
+          image={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
     </div>
   );
 };

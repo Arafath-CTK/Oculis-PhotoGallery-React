@@ -1,11 +1,14 @@
-import React, { useState } from "react"; // Fixed React import
+import React, { useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 
-const ImageCard = React.memo(function ImageCard({ image }) {
+const ImageCard = React.memo(function ImageCard({ image, onClick }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   return (
-    <div className="relative group aspect-square rounded-lg overflow-hidden shadow-lg">
+    <div
+      className="relative group aspect-square rounded-lg overflow-hidden shadow-lg cursor-pointer"
+      onClick={() => onClick(image)}
+    >
       <img
         src={image.urls.regular}
         alt={image.alt_description}
@@ -17,7 +20,10 @@ const ImageCard = React.memo(function ImageCard({ image }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
       <button
-        onClick={() => setIsFavorite(!isFavorite)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsFavorite(!isFavorite);
+        }}
         className="absolute top-3 right-3 p-2 rounded-full bg-white/50 hover:bg-white transition-colors"
       >
         <FaRegHeart
