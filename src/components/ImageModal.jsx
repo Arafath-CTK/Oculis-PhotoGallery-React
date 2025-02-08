@@ -2,12 +2,6 @@ import { useState, useEffect } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-const modalVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.95 },
-};
-
 const ImageModal = ({ image, onClose }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
@@ -28,17 +22,29 @@ const ImageModal = ({ image, onClose }) => {
       {image && (
         <motion.div
           className="fixed inset-0 z-50 modal-overlay bg-black/75 flex items-center justify-center p-4"
-          variants={modalVariants} // Use our defined variants.
-          initial="hidden" // Initial state when the modal is mounted.
-          animate="visible" // Animate to the visible state.
-          exit="exit" // Animate to the exit state when unmounting.
+          variants={{
+            hidden: { opacity: 0, scale: 0.95 },
+            visible: { opacity: 1, scale: 1 },
+            exit: { opacity: 0, scale: 0.95 },
+          }}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           {/* Modal Content: Clicking inside should not close the modal */}
           <motion.div
-            className="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto flex flex-col md:flex-row"
+            className="relative bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Dedicated Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute top-2 right-2 z-20 p-2 focus:outline-none"
+            >
+              &#x2715;
+            </button>
+
             {/* Left Side: Image Section */}
             <div className="md:w-1/2 p-4 flex items-center justify-center relative">
               {!isImageLoaded && (
@@ -58,10 +64,10 @@ const ImageModal = ({ image, onClose }) => {
             </div>
 
             {/* Right Side: Details Section */}
-            <div className="md:w-1/2 p-6 space-y-6">
+            <div className="md:w-1/2 p-6 space-y-6 overflow-y-auto relative">
               {/* Title and Like Button */}
               <div className="flex justify-between items-start">
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-bold pr-16 line-clamp-2">
                   {image.alt_description || "Untitled"}
                 </h2>
               </div>
