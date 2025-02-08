@@ -40,7 +40,7 @@ const ImageModal = ({ image, onClose }) => {
             {/* Dedicated Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-2 right-2 z-20 p-2 focus:outline-none"
+              className="absolute top-4 right-4 md:top-2 md:right-2 z-20 p-2 focus:outline-none"
             >
               &#x2715;
             </button>
@@ -64,7 +64,7 @@ const ImageModal = ({ image, onClose }) => {
             </div>
 
             {/* Right Side: Details Section */}
-            <div className="md:w-1/2 p-6 space-y-6 overflow-y-auto relative">
+            <div className="md:w-1/2 p-6 space-y-6 relative">
               {/* Title and Like Button */}
               <div className="flex justify-between items-start">
                 <h2 className="text-2xl font-bold pr-16 line-clamp-2">
