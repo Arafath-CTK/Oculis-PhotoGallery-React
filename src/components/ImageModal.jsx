@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const ImageModal = ({ image, onClose }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Close modal when clicking outside
+  // CLOSE MODAL WHEN CLICKING OUTSIDE
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (e.target.classList.contains("modal-overlay")) {
@@ -32,12 +32,11 @@ const ImageModal = ({ image, onClose }) => {
           exit="exit"
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          {/* Modal Content: Clicking inside should not close the modal */}
           <motion.div
             className="relative bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Dedicated Close Button */}
+            {/* DEDICATED CLOSE BUTTON */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 md:top-2 md:right-2 z-20 p-2 focus:outline-none"
@@ -45,11 +44,11 @@ const ImageModal = ({ image, onClose }) => {
               &#x2715;
             </button>
 
-            {/* Left Side: Image Section */}
+            {/* LEFT SIDE - IMAGE */}
             <div className="md:w-1/2 p-4 flex items-center justify-center relative">
               {!isImageLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse rounded-lg">
-                  {/* Optionally, you can add a spinner icon or similar element here */}
+                  {/* SPINNER CAN BE ADDED HERE FOR BETTER UX */}
                 </div>
               )}
 
@@ -63,16 +62,14 @@ const ImageModal = ({ image, onClose }) => {
               />
             </div>
 
-            {/* Right Side: Details Section */}
+            {/* RIGHT SIDE - DETAILS */}
             <div className="md:w-1/2 p-6 space-y-6 relative">
-              {/* Title and Like Button */}
+              =
               <div className="flex justify-between items-start">
                 <h2 className="text-2xl font-bold pr-16 line-clamp-2">
                   {image.alt_description || "Untitled"}
                 </h2>
               </div>
-
-              {/* Photographer Info */}
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold">Photographer</h3>
                 <div className="flex items-center gap-2">
@@ -84,8 +81,6 @@ const ImageModal = ({ image, onClose }) => {
                   <p className="text-lg">{image.user.name}</p>
                 </div>
               </div>
-
-              {/* Published Date */}
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold">Published</h3>
                 <div className="flex items-center gap-2">

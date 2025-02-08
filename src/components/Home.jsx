@@ -8,9 +8,9 @@ function Home() {
 
   return (
     <div className="App">
-      <HomeBanner onSearch={setQuery} />
-      <CategoriesStrip onCategorySelect={setQuery} />
-      <ImageGrid query={query} />
+      <HomeBanner onSearch={setQuery} /> {/* PASSING "setQuery" FUNCTION TO HomeBanner */}
+      <CategoriesStrip onCategorySelect={setQuery} /> {/* PASSING "setQuery" FUNCTION TO CatergoriesStrip ALSO */}
+      <ImageGrid query={query} /> {/* PASSING THE "query" TO THE "ImageGrid" FOR MAKE THE API CALL WITH THE QUERY */}
     </div>
   );
 }

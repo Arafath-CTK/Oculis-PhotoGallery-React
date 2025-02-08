@@ -2,22 +2,24 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import ImageCard from "./ImageCard";
 import ImageModal from "./ImageModal";
 
+// RECIEVING THE SEARCH QUERY FROM THE Home.jsx
 const ImageGrid = ({ query }) => {
-  const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [images, setImages] = useState([]); // ARRAY FOR STORING THE IMAGES FETCHED THROUGH API CALL
+  const [page, setPage] = useState(1); // PAGE NUMBER SET AS 1 INITIALLY
+  const [hasMore, setHasMore] = useState(true); // STATE INDICATING THERE IS MORE IMAGES TO BE LOADED - USEFULL FOR PROPER FUNCTIONING OF INFINITE SCROLL
   const [isLoading, setIsLoading] = useState(false);
-  const sentinelRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const sentinelRef = useRef(null); // REFERENCE NODE FOR INTERSECTION OBSERVER
+  const [selectedImage, setSelectedImage] = useState(null); // FOR SHOWING IN THE MODAL
 
-  // Reset images when query changes
+  // SETTING THE STATES TO INITIAL STAGE WHEN QUERY CHANGES. BECAUSE, ITS A NEW QUERY - THE PREVIOUSLY FETCHED IMAGES CAN'T BE SHOWN UNDER THIS
   useEffect(() => {
     setImages([]);
     setPage(1);
     setHasMore(true);
   }, [query]);
 
-  // Function to fetch regular images
+  // FUNCTION TO FETCH REGULAR IMAGES
+  // USING "useCallback" FOR MEMOIZING THE FUNCTION AND NOT BEING RECREATED FOR EVERY COMPONENT RENDERS UNLESS THE DEPENDENCY CHANGES
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -33,7 +35,7 @@ const ImageGrid = ({ query }) => {
       );
       const data = await response.json();
 
-      setImages((prev) => [...prev, ...data]);
+      setImages((prev) => [...prev, ...data]); //STORING ALREADY EXISTING AND NEW IMAGES IN THE ARRAY FOR INFINITE SCROLL FUNCTIONALITY
       setHasMore(data.length > 0);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -42,7 +44,7 @@ const ImageGrid = ({ query }) => {
     }
   }, [page]);
 
-  // Function to fetch searched images
+  // FUNCTION TO FETCH QUERIED IMAGES. HERE ALSO USED "useCallback" FOR MEMOIZING THE FUNCTION AND GIVING BETTER PERFORMANCE
   const fetchSearchedImages = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -67,7 +69,7 @@ const ImageGrid = ({ query }) => {
     }
   }, [page, query]);
 
-  // Fetch images based on whether there's a search query
+  // FETCHING IMAGES ON BASIS OF WHETHER QUERY EXISTS OR NOT
   useEffect(() => {
     if (query) {
       fetchSearchedImages();
@@ -76,19 +78,22 @@ const ImageGrid = ({ query }) => {
     }
   }, [page, query]);
 
-  // Infinite Scroll Intersection Observer
+  // INTERSECTION OBSERVER SETUP FOR INFINITE SCROLL FUNCTIONALITY
   useEffect(() => {
+    // "IntersectionObserver" IS A BROWSER API WHICH LETS YOU KNOW WHEN AN ELEMENT ENTERS OR LEAVES THE VIEWPORT.
     const observer = new IntersectionObserver(
+      // "entry" REFERS TO AN "IntersectionObserverEntry" OBJECT IN THE CONTEXT OF THE INTERSECTION OBSERVER API,
       ([entry]) => {
         if (entry.isIntersecting && hasMore && !isLoading) {
-          setPage((prev) => prev + 1);
+          setPage((prev) => prev + 1); // INCREASING THE PAGE NUMBER IF THE CONDITIONS ARE MET
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 } // SETTING THAT 100% OF THE ENTRY ELEMENT HAS TO BE IN THE VIEWPORT
     );
 
+    // SETTING OBSERVER TO WATCH ON THE SENTINAL IF IT EXISTS
     if (sentinelRef.current) observer.observe(sentinelRef.current);
-    return () => observer.disconnect();
+    return () => observer.disconnect(); // CLEANUP FOR DISCONNECIION WHEN THE COMPONENT UNMOUNTS OR DEPENDANCY CHANGES
   }, [hasMore, isLoading]);
 
   return (
@@ -121,9 +126,10 @@ const ImageGrid = ({ query }) => {
         )}
       </div>
 
+      {/*SENTINAL ELEMENT SET FOR OBSERVING THE INTERSECTION */}
       <div ref={sentinelRef} className="h-2 w-full" />
 
-      {/* Modal */}
+      {/* MODAL */}
       {selectedImage && (
         <ImageModal
           image={selectedImage}

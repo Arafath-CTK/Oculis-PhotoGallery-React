@@ -1,5 +1,7 @@
 import React from "react";
 
+// ENSURING PREVENSION OF UNNECESSARY RE-RENDERS BY WRAPPING THE FUNCTION INSIDE "React.memo",
+// WHICH MEMOIZISES THE FUNCTION AND RE-RENDER ONLY IF THE PROPS CHANGED.
 const ImageCard = React.memo(function ImageCard({ image, onClick }) {
   return (
     <div
