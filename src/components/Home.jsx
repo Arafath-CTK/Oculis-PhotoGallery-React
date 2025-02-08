@@ -4,8 +4,7 @@ import CategoriesStrip from "./CategoryStrip";
 import ImageGrid from "./ImageGrid";
 
 function Home() {
-  // query will store either the text search or a selected category title.
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(""); // BOTH THE TEXT SEARCH AND CATEGORY SELECTION WILL BE STORED AS "query"
 
   return (
     <div className="App">

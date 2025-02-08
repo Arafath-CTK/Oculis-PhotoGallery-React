@@ -1,9 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="w-full py-5 bg-gray-800 text-white text-center">
-      <p>
-        &copy; {new Date().getFullYear()} OCULIS-PhotoGallery All rights
-        reserved.
+    <footer className="w-full py-1 text-gray-800 bg-white text-center">
+      <p className="text-sm md:text-base">
+        &copy;{new Date().getFullYear()} Oculis Photo Gallery
       </p>
     </footer>
   );

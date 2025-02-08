@@ -33,7 +33,7 @@ const HomeBanner = ({ onSearch }) => {
 
   return (
     <div
-      className="relative w-full h-[600px] md:h-[500px] lg:h-[550px] flex flex-col md:flex-row items-center justify-center px-6 md:px-12 lg:px-20"
+      className="pt-16 md:pt-24 relative w-full h-[680px] md:h-[540px] lg:h-[590px] flex flex-col md:flex-row items-center justify-center px-6 md:px-12 lg:px-20"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
