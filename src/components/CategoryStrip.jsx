@@ -1,7 +1,6 @@
-// CategoriesStrip.jsx
 import { useState, useEffect } from "react";
 
-const CategoriesStrip = () => {
+const CategoriesStrip = ({ onCategorySelect }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -47,6 +46,7 @@ const CategoriesStrip = () => {
             {categories.map((category) => (
               <div
                 key={category.id}
+                onClick={() => onCategorySelect(category.title)}
                 className="flex-shrink-0 px-5 py-2 bg-gray-100 rounded-lg
                           text-gray-700 text-sm font-medium hover:bg-gray-200 transition-all 
                           duration-300 cursor-pointer border border-gray-200 shadow-sm"

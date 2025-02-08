@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import ImageCard from "./ImageCard";
 import ImageModal from "./ImageModal";
 
-const ImageGrid = () => {
+const ImageGrid = ({ query }) => {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -10,28 +10,42 @@ const ImageGrid = () => {
   const sentinelRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  // Reset the images list and page when query changes
+  useEffect(() => {
+    setImages([]);
+    setPage(1);
+    setHasMore(true);
+  }, [query]);
+
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `https://api.unsplash.com/photos?page=${page}&per_page=12`,
-        {
-          headers: {
-            Authorization: `Client-ID ${
-              import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-            }`,
-          },
-        }
-      );
+      const endpoint = query
+        ? `https://api.unsplash.com/search/photos?page=${page}&per_page=12&query=${query}`
+        : `https://api.unsplash.com/photos?page=${page}&per_page=12`;
+
+      const response = await fetch(endpoint, {
+        headers: {
+          Authorization: `Client-ID ${
+            import.meta.env.VITE_UNSPLASH_ACCESS_KEY
+          }`,
+        },
+      });
       const data = await response.json();
-      setImages((prev) => [...prev, ...data]);
-      setHasMore(data.length > 0);
+
+      if (query) {
+        setImages((prev) => [...prev, ...data.results]);
+        setHasMore(data.results.length > 0);
+      } else {
+        setImages((prev) => [...prev, ...data]);
+        setHasMore(data.length > 0);
+      }
     } catch (error) {
       console.error("Fetch error:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [page]);
+  }, [page, query]);
 
   useEffect(() => {
     fetchImages();

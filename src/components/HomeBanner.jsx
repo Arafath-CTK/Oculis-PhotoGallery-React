@@ -10,13 +10,21 @@ const imageList = [
 ];
 
 // HomeBanner.jsx
-const HomeBanner = () => {
+const HomeBanner = ({ onSearch }) => {
   const [bgImage, setBgImage] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * imageList.length);
     setBgImage(imageList[randomIndex]);
   }, []);
+
+  // On each change, update the parent's query state.
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    onSearch(value.trim());
+  };
 
   return (
     <div
@@ -44,6 +52,8 @@ const HomeBanner = () => {
             <input
               type="text"
               placeholder="Search for stunning photos..."
+              value={searchValue}
+              onChange={handleChange}
               className="w-full bg-white/5 text-white placeholder-gray-300 py-3 pl-12 pr-5 rounded-full backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-white/40"
             />
           </div>
