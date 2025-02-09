@@ -76,7 +76,8 @@ const ImageGrid = ({ query }) => {
     } else {
       fetchImages();
     }
-  }, [page, query]);
+  }, [query, fetchImages, fetchSearchedImages]); // ITS NOT NECESSARY TO INCLUDE THE FUNCTIONS, BUT IT IS GOOD PRACTICE.
+  // ADDED "query" BECAUSE THE EFFECT DIRECTLY USING THEM
 
   // INTERSECTION OBSERVER SETUP FOR INFINITE SCROLL FUNCTIONALITY
   useEffect(() => {

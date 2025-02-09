@@ -8,11 +8,12 @@ Oculis is a modern and responsive photo gallery web application built with React
 - Responsive design using Tailwind CSS
 - Fast performance with Vite
 - User-friendly interface
+- Smooth animations
+- Performance optimized
 
 ## Demo
 
-[Live Demo](#) (https://oculis-photo-gallery-react.vercel.app/)
-
+[Live Demo](https://oculis-photo-gallery-react.vercel.app/)
 
 ## Installation and Setup
 
@@ -26,8 +27,8 @@ Follow these steps to run the project locally:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/oculis.git
-cd oculis
+git clone https://github.com/Arafath-CTK/Oculis-PhotoGallery-React.git
+cd Oculis-PhotoGallery-React
 ```
 
 ### Install Dependencies
@@ -57,9 +58,8 @@ npm run dev  # or yarn dev
 - **Vite** - Fast build tool
 - **Tailwind CSS** - Styling
 - **Unsplash API** - Fetching images
+. **Framer-Motion** - Smooth animation and Transitions
 
 ## Contributing
 
 Contributions are welcome! If you'd like to improve this project, feel free to fork the repository and create a pull request.
-
-
