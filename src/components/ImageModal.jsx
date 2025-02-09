@@ -64,7 +64,6 @@ const ImageModal = ({ image, onClose }) => {
 
             {/* RIGHT SIDE - DETAILS */}
             <div className="md:w-1/2 p-6 space-y-6 relative">
-              =
               <div className="flex justify-between items-start">
                 <h2 className="text-2xl font-bold pr-16 line-clamp-2">
                   {image.alt_description || "Untitled"}
