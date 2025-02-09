@@ -41,7 +41,7 @@ npm install  # or yarn install
 
 1. Create an account on [Unsplash](https://unsplash.com/).
 2. Get an API key from [Unsplash Developers](https://unsplash.com/developers).
-3. Create a `.env` file in the root directory and add:
+3. Create a `.env.local` file in the root directory and add:
    ```bash
    VITE_UNSPLASH_ACCESS_KEY=your_api_key_here
    ```
@@ -58,7 +58,7 @@ npm run dev  # or yarn dev
 - **Vite** - Fast build tool
 - **Tailwind CSS** - Styling
 - **Unsplash API** - Fetching images
-. **Framer-Motion** - Smooth animation and Transitions
+- **Framer-Motion** - Smooth animation and Transitions
 
 ## Contributing
 
